@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState, useRef, useCallback } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import IncidentForm from '../components/IncidentForm';
 import IncidentList from '../components/IncidentList';
 import { Bell, AlertTriangle, Shield, BellRing } from 'lucide-react';
 import { Incident } from '../types';
 
+const libraries = ['places'];
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+};
+
+const center = {
+  lat: 43.668920436872654, // Latitude de Nice
+  lng: 7.213590497382964, // Longitude de Nice
+};
+
 export default function AlertPage() {
-  const [incidents, setIncidents] = React.useState<Incident[]>([
+  const [incidents, setIncidents] = useState<Incident[]>([
     {
       id: 1,
       type: 'Accident routier',
@@ -21,8 +34,14 @@ export default function AlertPage() {
       description: 'Route barrée pour travaux',
       severity: 'medium',
       timestamp: new Date().toISOString(),
-    }
+    },
   ]);
+  const [address, setAddress] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>(center);
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocationClicked, setIsLocationClicked] = useState(false);  // Flag pour savoir si l'utilisateur a cliqué sur la carte
+  const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
 
   const addIncident = (incident: Omit<Incident, 'id' | 'timestamp'>) => {
     setIncidents([
@@ -35,6 +54,38 @@ export default function AlertPage() {
     ]);
   };
 
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne un endroit dans la barre de recherche
+  const handlePlaceChanged = () => {
+    const searchBox = searchBoxRef.current;
+    if (!searchBox) return;
+
+    const places = searchBox.getPlaces();
+    if (places.length === 0) {
+      setError('Aucune adresse trouvée');
+      return;
+    }
+
+    const place = places[0];
+    if (place.geometry && place.geometry.location) {
+      setAddress(place.formatted_address || '');
+      setMapCenter(place.geometry.location.toJSON());
+      setError(null);
+    } else {
+      setError('Localisation non trouvée pour cette adresse');
+    }
+  };
+
+  // Gestion du clic sur la carte pour obtenir les coordonnées
+  const handleMapClick = useCallback((e: google.maps.MapMouseEvent) => {
+    const latLng = e.latLng;
+    if (latLng) {
+      setLocation({ lat: latLng.lat(), lng: latLng.lng() });
+      setAddress(`${latLng.lat().toFixed(6)},${latLng.lng().toFixed(6)}`);
+      setIsLocationClicked(true); // On marque que l'utilisateur a cliqué sur la carte
+      setError(null);
+    }
+  }, []);
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -44,7 +95,10 @@ export default function AlertPage() {
               <BellRing className="text-amber-500" />
               Signaler un incident
             </h2>
-            <IncidentForm onSubmit={addIncident} />
+            <IncidentForm
+              onSubmit={addIncident}
+              location={isLocationClicked ? address : ''}  // Si l'utilisateur a cliqué sur la carte, on passe les coordonnées, sinon le champ reste vide
+            />
           </div>
           
           <div className="bg-white rounded-xl shadow-lg p-6">
@@ -58,25 +112,29 @@ export default function AlertPage() {
 
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Statistiques</h2>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-lg">
-                <Bell className="text-amber-500" />
-                <div>
-                  <p className="font-semibold text-gray-800">{incidents.length}</p>
-                  <p className="text-sm text-gray-600">Incidents signalés</p>
-                </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Carte des incidents</h2>
+            <LoadScript googleMapsApiKey="AIzaSyDh7acIuzTV9QoJj2yde2DKKT5_ly2VvGs" libraries={libraries}>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={mapCenter}
+                zoom={12}
+                onClick={handleMapClick}
+              >
+                {location && (
+                  <Marker position={{ lat: location.lat, lng: location.lng }} />
+                )}
+              </GoogleMap>
+            </LoadScript>
+
+            {/* Affichage des coordonnées sélectionnées */}
+            {address && (
+              <div className="mt-4 text-lg font-semibold">
+                <p>Coordonnées sélectionnées :</p>
+                <p>{address}</p>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-red-50 rounded-lg">
-                <AlertTriangle className="text-red-500" />
-                <div>
-                  <p className="font-semibold text-gray-800">
-                    {incidents.filter(i => i.severity === 'high').length}
-                  </p>
-                  <p className="text-sm text-gray-600">Incidents critiques</p>
-                </div>
-              </div>
-            </div>
+            )}
+
+            {error && <div className="text-red-500 mt-4">{error}</div>}
           </div>
 
           <div className="bg-amber-500 rounded-xl shadow-lg p-6 text-white">

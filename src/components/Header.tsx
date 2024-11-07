@@ -11,7 +11,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bug className="h-8 w-8 text-amber-500" />
-            <h1 className="text-2xl font-bold text-gray-800">Bee Attentive</h1>
+            <h1 className="text-2xl font-bold text-gray-800 cursor-pointer" onClick={() => navigate('/')}>Bee Attentive</h1>
           </div>
           <nav>
             <ul className="flex items-center gap-6">
@@ -32,9 +32,20 @@ export default function Header() {
                 </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-amber-500 transition-colors">
-                  À propos
-                </a>
+                <button 
+                  onClick={() => navigate('/guide')} 
+                  className="text-gray-600 hover:text-amber-500 transition-colors"
+                >
+                  Guide
+                </button>
+              </li>
+              <li>
+              <button 
+                  onClick={() => navigate('/carte')} 
+                  className="text-gray-600 hover:text-amber-500 transition-colors"
+                >
+                  carte
+                </button>
               </li>
             </ul>
           </nav>
