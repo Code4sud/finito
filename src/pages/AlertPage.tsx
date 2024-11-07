@@ -154,6 +154,31 @@ export default function AlertPage() {
               </li>
             </ul>
           </div>
+
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-8 mt-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Statistiques</h2>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-lg">
+                  <Bell className="text-amber-500" />
+                  <div>
+                  <p className="font-semibold text-gray-800">{incidents.length}</p>
+                  <p className="text-sm text-gray-600">Incidents signalés</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-red-50 rounded-lg">
+                <AlertTriangle className="text-red-500" />
+                  <div>
+                    <p className="font-semibold text-gray-800">
+                      {incidents.filter(i => i.severity === 'high').length}
+                      </p>
+                    <p className="text-sm text-gray-600">Incidents critiques</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
