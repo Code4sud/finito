@@ -11,17 +11,17 @@ const guides: EmergencyGuide[] = [
   {
     title: "Inondation",
     icon: <Waves className="text-blue-500" size={32} />,
-    image: "/images/innondation.png",
+    image: "/guide_images/innondation.png",
   },
   {
     title: "Incendie",
     icon: <Flame className="text-red-500" size={32} />,
-    image: "/images/Incendie_en_general1.png",
+    image: "/guide_images/Incendie_en_general1.png",
   },
   {
     title: "Accident",
     icon: <Skull className="text-red-500" size={32} />,
-    image: "/images/accident.jpg",
+    image: "/guide_images/accident.jpg",
   },
 ];
 
