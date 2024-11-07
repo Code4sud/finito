@@ -57,7 +57,27 @@ export default function IncidentForm({ onSubmit }: IncidentFormProps) {
             <option value="Accident routier">
               Problème de qualité de l’air{' '}
             </option>
+            <option value="Manifestation ou grève">Manifestation ou grève
+            </option>
+            <option value="Incident lors d’événements publics">    Incident lors d’événements publics
+            </option>
+            <option value="Problème de collecte des déchets">Problème de collecte des déchets
+            </option>
+            <option value="    Problème d’approvisionnement en eau
+">    Problème d’approvisionnement en eau
+            </option>
+            <option value="    Incident lié aux infrastructures
+">    Incident lié aux infrastructures
+            </option>
+            <option value="    Panne de signalisation routière
+">    Panne de signalisation routière
+            </option>
+            <option value="    Blocage de circulation
+">    Blocage de circulation
+            </option>
+            <option value="Panne de réseau téléphonique ou Internet">Panne de réseau téléphonique ou Internet</option>
             <option value="Autre">Autre</option>
+
           </select>
         </div>
 
