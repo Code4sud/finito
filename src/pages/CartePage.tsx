@@ -103,6 +103,10 @@ const CartePage: React.FC = () => {
     }
   }, [zoomLevel]);
 
+  useEffect(() => {
+    document.title = "Bee Attentive - Carte";
+  }, []);
+
   return (
     <div>
     <h1

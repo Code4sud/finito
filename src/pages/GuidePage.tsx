@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AlertTriangle, Waves, Flame, Skull } from 'lucide-react';
 
 interface EmergencyGuide {
@@ -26,6 +26,9 @@ const guides: EmergencyGuide[] = [
 ];
 
 export default function GuidePage() {
+  useEffect(() => {
+    document.title = "Bee Attentive - Guide";
+  }, []);
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">

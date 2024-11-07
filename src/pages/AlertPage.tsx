@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useEffect,useState, useRef, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import IncidentForm from '../components/IncidentForm';
 import IncidentList from '../components/IncidentList';
@@ -18,6 +18,10 @@ const center = {
 };
 
 export default function AlertPage() {
+  useEffect(() => {
+    document.title = "Bee Attentive - Alerte";
+  }, []);
+  
   const [incidents, setIncidents] = useState<Incident[]>([
     {
       id: 1,
@@ -84,7 +88,7 @@ export default function AlertPage() {
             </h2>
             <IncidentForm
               onSubmit={addIncident}
-              location={isLocationClicked ? address : ''}  // Si l'utilisateur a cliqué sur la carte, on passe les coordonnées, sinon le champ reste vide
+              location={isLocationClicked ? address : ''}
             />
           </div>
           

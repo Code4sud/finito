@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cloud, Thermometer, Wind, Droplets, AlertTriangle } from 'lucide-react';
+import { Sun, Cloud, Thermometer, Wind, Droplets, AlertTriangle } from 'lucide-react';
 
 interface WeatherData {
   temperatureMin: number;
@@ -74,7 +74,7 @@ export default function WeatherPanel() {
     <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
         <Cloud className="text-amber-500" />
-        Météo locale
+        Météo locale - Nice
       </h2>
       
       <div className="space-y-4">
@@ -88,7 +88,6 @@ export default function WeatherPanel() {
               </p>
             </div>
           </div>
-          <p className="text-sm font-medium text-gray-800">{weather.description}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -115,6 +114,13 @@ export default function WeatherPanel() {
               <p className="text-lg font-bold text-gray-800">{weather.rainProbability}%</p>
             </div>
           </div>
+          <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl">
+            <Sun className="text-amber-500" size={20} />
+            <div>
+              <p className="text-xs text-gray-600">Heures d'ensoleillement</p>
+              <p className="text-lg font-bold text-gray-800">{weather.sunHours} h</p>
+            </div>
+          </div>
         </div>
          {/* New section for weather warnings */}
          <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4">
@@ -138,7 +144,7 @@ export default function WeatherPanel() {
                </div>
              ))
            ) : (
-             <p>No weather warnings available.</p>
+             <p>Pas d'alertes météo.</p>
            )}
          </div>
       </div>

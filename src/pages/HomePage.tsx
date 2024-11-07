@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, BookOpen, Cloud, Thermometer, Wind, Droplets, Phone } from 'lucide-react';
 import WeatherPanel from '../components/WeatherPanel';
@@ -14,6 +14,11 @@ const EmergencyNumber = ({ number, label }: { number: string; label: string }) =
 );
 
 export default function HomePage() {
+
+  useEffect(() => {
+    document.title = "Bee Attentive - Accueil";
+  }, []);
+
   const navigate = useNavigate();
 
   return (
