@@ -1,3 +1,6 @@
 PROJET HACKATHON 2024
 
-a ajouter pour l'api : npm install @react-google-maps/api
+npm install
+npm run dev
+
+http://localhost:5173
