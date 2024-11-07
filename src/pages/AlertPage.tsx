@@ -35,12 +35,20 @@ export default function AlertPage() {
       severity: 'medium',
       timestamp: new Date().toISOString(),
     },
+    {
+      id: 3,
+      type: 'Événement météo',
+      location: '43.700396,7.269591',
+      description: 'Inondation de la rive droite',
+      severity: 'medium',
+      timestamp: new Date().toISOString(),
+    },
   ]);
   const [address, setAddress] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>(center);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isLocationClicked, setIsLocationClicked] = useState(false);  // Flag pour savoir si l'utilisateur a cliqué sur la carte
+  const [isLocationClicked, setIsLocationClicked] = useState(false);
   const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
 
   const addIncident = (incident: Omit<Incident, 'id' | 'timestamp'>) => {
@@ -53,28 +61,7 @@ export default function AlertPage() {
       ...incidents,
     ]);
   };
-
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne un endroit dans la barre de recherche
-  const handlePlaceChanged = () => {
-    const searchBox = searchBoxRef.current;
-    if (!searchBox) return;
-
-    const places = searchBox.getPlaces();
-    if (places.length === 0) {
-      setError('Aucune adresse trouvée');
-      return;
-    }
-
-    const place = places[0];
-    if (place.geometry && place.geometry.location) {
-      setAddress(place.formatted_address || '');
-      setMapCenter(place.geometry.location.toJSON());
-      setError(null);
-    } else {
-      setError('Localisation non trouvée pour cette adresse');
-    }
-  };
-
+  
   // Gestion du clic sur la carte pour obtenir les coordonnées
   const handleMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     const latLng = e.latLng;
