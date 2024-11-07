@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Cloud, Thermometer, Wind, Droplets, AlertTriangle } from 'lucide-react';
 
 interface WeatherData {
-  temperature: number;
-  humidity: number;
+  temperatureMin: number;
+  temperatureMax: number;
   windSpeed: number;
+  gustSpeed: number;
+  rainProbability: number;
+  sunHours: number;
   description: string;
 }
 
@@ -15,13 +18,9 @@ interface WeatherWarning {
   end_time: string;
 }
 
+
 export default function WeatherPanel() {
-  const [weather, setWeather] = useState<WeatherData>({
-    temperature: 22,
-    humidity: 65,
-    windSpeed: 12,
-    description: "Partiellement nuageux"
-  });
+
   const [weatherWarnings, setWeatherWarnings] = useState<WeatherWarning[]>([]);
 
   useEffect(() => {
@@ -44,6 +43,33 @@ export default function WeatherPanel() {
     });
   }, []);
 
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+
+  useEffect(() => {
+    // Remplacez par votre clé API Météo-Concept
+    const url = `https://api.meteo-concept.com/api/forecast/daily?token=550175e1f46e3bb046960b0f98738b927e61bb3e27341ddb9046bd4e5121d3aa&insee=06088`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const currentWeather = data.forecast[0]; // Première entrée des prévisions
+        setWeather({
+          temperatureMin: currentWeather.tmin, // Température minimale
+          temperatureMax: currentWeather.tmax, // Température maximale
+          windSpeed: currentWeather.wind10m, // Vitesse du vent à 10m
+          gustSpeed: currentWeather.gust10m, // Rafales de vent à 10m
+          rainProbability: currentWeather.probarain, // Probabilité de pluie sur 10 minutes
+          sunHours: currentWeather.sun_hours, // Heures d'ensoleillement
+          description: currentWeather.weather, // Description du temps (ex: "Nuageux")
+        });
+      })
+      .catch(error => console.error('Erreur de récupération des données météo:', error));
+  }, []);
+
+  if (!weather) {
+    return <p>Chargement des données météo...</p>;
+  }
+
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -57,7 +83,9 @@ export default function WeatherPanel() {
             <Thermometer className="text-blue-500" size={24} />
             <div>
               <p className="text-sm text-gray-600">Température</p>
-              <p className="text-xl font-bold text-gray-800">{weather.temperature}°C</p>
+              <p className="text-xl font-bold text-gray-800">
+                {weather.temperatureMin}°C - {weather.temperatureMax}°C
+              </p>
             </div>
           </div>
           <p className="text-sm font-medium text-gray-800">{weather.description}</p>
@@ -75,37 +103,44 @@ export default function WeatherPanel() {
           <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-teal-50 to-teal-100 rounded-xl">
             <Droplets className="text-teal-500" size={20} />
             <div>
-              <p className="text-xs text-gray-600">Humidité</p>
-              <p className="text-lg font-bold text-gray-800">{weather.humidity}%</p>
+              <p className="text-xs text-gray-600">Rafales de vent</p>
+              <p className="text-lg font-bold text-gray-800">{weather.gustSpeed} km/h</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-xl">
+            <Cloud className="text-green-500" size={20} />
+            <div>
+              <p className="text-xs text-gray-600">Probabilité de pluie</p>
+              <p className="text-lg font-bold text-gray-800">{weather.rainProbability}%</p>
             </div>
           </div>
         </div>
-
-        {/* New section for weather warnings */}
-        <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4">
-          <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-            <AlertTriangle className="text-red-500" size={24} />
-            Avertissements météorologiques
-          </h3>
-          {weatherWarnings.length > 1 ? (
-            weatherWarnings.map((warning, index) => (
-              <div key={index} className="flex items-start gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 mb-2">
-                <div className={`text-${warning.color_id > 0 ? 'amber' : 'red'}-500 flex-shrink-0`}>
-                  {/* Placeholder for an icon */}
-                  <span>⚠️</span>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">{warning.phenomenon_id}</p>
-                  <p className="text-sm text-gray-600">
-                    From {warning.begin_time} to {warning.end_time}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No weather warnings available.</p>
-          )}
-        </div>
+         {/* New section for weather warnings */}
+         <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4">
+           <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+             <AlertTriangle className="text-red-500" size={24} />
+             Avertissements météorologiques
+           </h3>
+           {weatherWarnings.length > 1 ? (
+             weatherWarnings.map((warning, index) => (
+               <div key={index} className="flex items-start gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-3 mb-2">
+                 <div className={`text-${warning.color_id > 0 ? 'amber' : 'red'}-500 flex-shrink-0`}>
+                   {/* Placeholder for an icon */}
+                   <span>⚠️</span>
+                 </div>
+                 <div>
+                   <p className="font-medium text-gray-800">{warning.phenomenon_id}</p>
+                   <p className="text-sm text-gray-600">
+                     From {warning.begin_time} to {warning.end_time}
+                   </p>
+                 </div>
+               </div>
+             ))
+           ) : (
+             <p>No weather warnings available.</p>
+           )}
+         </div>
       </div>
     </div>
   );
