@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AlertPage from './pages/AlertPage';
 import GuidePage from './pages/GuidePage';
+import CartePage from './pages/CartePage';
 import Header from './components/Header';
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/alert" element={<AlertPage />} />
         <Route path="/guide" element={<GuidePage />} />
+        <Route path="/carte" element={<CartePage />} />
       </Routes>
     </div>
   );
