@@ -60,7 +60,7 @@ export default function Header() {
             </a>
             <div className="flex items-center gap-2">
               <Bug className="h-8 w-8 text-amber-500" />
-              <h1 className="text-2xl font-bold text-yellow-800 cursor-pointer" onClick={() => navigate('/')}>Bee Attentive</h1>
+              <h1 className="text-3xl font-bold text-yellow-800 cursor-pointer" onClick={() => navigate('/')}>Bee Attentive</h1>
             </div>
             <div>
                 <button onClick={toggleDrawer} className='cursor-pointer bg-transparent w-fit h-full flex items-center justify-end  menu-burger'>
