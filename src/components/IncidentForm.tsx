@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, AlertTriangle } from 'lucide-react';
 import { Incident } from '../types';
 
@@ -15,7 +16,8 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ onSubmit, location }) => {
     severity: 'medium',
   });
 
-  // Met à jour la localisation si une nouvelle valeur est transmise (ex. en cliquant sur la carte)
+  const navigate = useNavigate();
+
   useEffect(() => {
     setFormData((prev) => ({ ...prev, location }));
   }, [location]);
@@ -122,9 +124,9 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ onSubmit, location }) => {
       </div>
 
       <button
+        onClick={() => navigate('/guide')}
         type="submit"
-        className="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2"
-      >
+        className="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
         <AlertTriangle className="h-5 w-5" />
         Signaler l'incident
       </button>
