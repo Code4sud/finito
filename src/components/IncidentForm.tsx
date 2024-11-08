@@ -37,6 +37,11 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ onSubmit, location }) => {
       description: '',
       severity: 'medium',
     });
+
+    setTimeout(() => {
+      navigate('/guide');
+    }, 3000)
+
   };
 
   return (
@@ -124,12 +129,16 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ onSubmit, location }) => {
       </div>
 
       <button
-        onClick={() => navigate('/guide')}
         type="submit"
         className="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
         <AlertTriangle className="h-5 w-5" />
         Signaler l'incident
       </button>
+      <div className="flex justify-center items-center">
+          <p className="text-gray-1000 flex items-center gap-3">
+          Vous serez redirigé sur la page de guide suite à la soumission du formulaire.
+          </p>
+        </div>
     </form>
   );
 };
