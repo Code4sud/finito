@@ -51,7 +51,7 @@ export default function GuidePage() {
                   <img
                     src={guide.image}
                     alt={guide.title}
-                    className="w-full h-full object-cover"
+                    className="w-full w-full object-cover"
                   />
                 </div>
                 
