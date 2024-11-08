@@ -108,12 +108,12 @@ const CartePage: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="mt-16">
     <h1
       style={{
         fontSize: "2em",
         color: "#333",
-        marginTop: "20px",
+        marginTop: "80px",
         justifyContent: "center",   // Centre horizontalement
         textAlign: "center",        // Aligne le texte au centre
       }}

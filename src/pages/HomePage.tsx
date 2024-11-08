@@ -22,7 +22,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8 mt-16">
       <div className="flex flex-col items-center gap-8">
         {/* Alert Button */}
         <div className="flex flex-col items-center justify-center space-y-6 w-full">
