@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - $PROJECT_NAME.ia4sud.fr
+        - $PROJECT_NAME.alerte4sud.fr
       secretName: $PROJECT_NAME-sec
   rules:
-    - host: $PROJECT_NAME.ia4sud.fr
+    - host: $PROJECT_NAME.alerte4sud.fr
       http:
         paths:
           - path: /
