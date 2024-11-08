@@ -59,6 +59,11 @@ export default function GuidePage() {
             </div>
           ))}
         </div>
+        <div className="flex justify-center items-center">
+          <p className="text-gray-1000 mt-8 flex items-center gap-3">
+            D'autres fiches informatives seront bientôt disponibles.
+          </p>
+        </div>
       </div>
     </main>
   );
